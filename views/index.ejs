@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+        <!-- alpine js -->
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+        <!-- sweet alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- iconify -->
+        <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+        <title>Hello, world!</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row text-center mt-5">
+                <h1>Naive Bayes : <strong>Diabetes Prediction</strong></h1>
+            </div>
+
+            <div class="row mt-3 d-flex justify-content-center">
+                <div class="col-2">
+                    <a href="/test" class="btn btn-secondary w-100"> Uji Data</a>
+                </div>
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Cari data" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                        <button class="btn btn-primary" type="button" id="button-addon2">Cari</button>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <a href="/add" class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"> <iconify-icon icon="zondicons:add-outline"></iconify-icon>Data</a>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2" type="button" onclick="uploadFile()"><iconify-icon icon="icon-park-outline:excel"></iconify-icon>Import</button>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Jenis Kelamin</th>
+                            <th scope="col">Kategori Umur</th>
+                            <th scope="col">Hipertensi</th>
+                            <th scope="col">Merokok</th>
+                            <th scope="col">Kadar Glukosa</th>
+                            <th scope="col">Diabetes Melitus</th>
+                        </tr>
+                    </thead>
+                    <tbody x-data="{ colors: ['Red', 'Orange', 'Yellow'] }">
+                        <% if (data) { %> <% data.forEach((element,i) => { %>
+                        <tr>
+                            <th scope="row"><%= i+1 %></th>
+                            <td><%= element.A1 %></td>
+                            <td><%= element.A3 %></td>
+                            <td><%= element.A4 %></td>
+                            <td><%= element.A5 %></td>
+                            <td><%= element.A7 %></td>
+                            <td><%= element.Kelas %></td>
+                        </tr>
+                        <% }) %> <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script>
+            async function uploadFile() {
+                const { value: file } = await Swal.fire({
+                    title: "Masukkan Dataset (xlsx)",
+                    input: "file",
+                    inputAttributes: {
+                        name: "xlsx",
+                        accept: "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    },
+                });
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        Swal.fire({
+                            title: "Wait for upload",
+                            didOpen: () => {
+                                const formData = new FormData();
+                                formData.append("xlsx", file);
+                                return fetch(`/upload`, {
+                                    method: "POST",
+                                    body: formData,
+                                })
+                                    .then(async (response) => {
+                                        // console.log(response);
+                                        if (!response.ok) {
+                                            throw new Error(response.statusText);
+                                        }
+
+                                        await Swal.fire({
+                                            position: "center",
+                                            icon: "success",
+                                            title: "File berhasil diunggah",
+                                            showConfirmButton: false,
+                                            timer: 1500,
+                                        });
+
+                                        window.location.reload();
+                                    })
+                                    .catch((error) => {
+                                        Swal.showValidationMessage(`Request failed: ${error}`);
+                                    });
+                            },
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+        <title>Hello, world!</title>
+    </head>
+    <body>
+        <h1 class="text-center mt-5"><strong>Add New Training Data</strong></h1>
+        <div class="row d-flex justify-content-center mt-5">
+            <div class="col-5">
+                <form action="/add" method="post" class="d-flex flex-column">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect02">Jenis Kelamin</label>
+                        <select class="form-select" id="inputGroupSelect02" name="gender">
+                            <option value="pria">Pria</option>
+                            <option value="wanita">Wanita</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect02">Kategori Umur</label>
+                        <select class="form-select" id="inputGroupSelect02" name="age">
+                            <option value="dewasa">Dewasa</option>
+                            <option value="tua">Tua</option>
+                            <option value="lansia">Lansia</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect02">Hipertensi</label>
+                        <select class="form-select" id="inputGroupSelect02" name="hipertensi">
+                            <option value="ya">Ya</option>
+                            <option value="tidak">Tidak</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect02">Merokok</label>
+                        <select class="form-select" id="inputGroupSelect02" name="smoke">
+                            <option value="ya">Ya</option>
+                            <option value="tidak">Tidak</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="inputGroupSelect02">Kadar Glukosa</label>
+                        <select class="form-select" id="inputGroupSelect02" name="glucose">
+                            <option value="normal">Normal</option>
+                            <option value="buruk">Buruk</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary mt-3" type="submit" id="button-addon2">Tambah Data</button>
+                    <a href="/" class="btn btn-secondary mt-3">Kembali</a>
+                </form>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </body>
+</html>
