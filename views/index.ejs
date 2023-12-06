@@ -26,20 +26,27 @@
             </div>
 
             <div class="row mt-3 d-flex justify-content-center">
-                <div class="col-2">
-                    <a href="/test" class="btn btn-secondary w-100"> Uji Data</a>
-                </div>
-                <div class="col-6">
+                <div class="col-8">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Cari data" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                        <div class="col-4">
+                            <select class="form-select" id="filter-kriteria" name="filter">
+                                <option value="gender">Jenis Kelamin</option>
+                                <option value="ageCategory">Kategori Umur</option>
+                                <option value="hypertension">Hipertensi</option>
+                                <option value="smoke">Merokok</option>
+                                <option value="glucoseCategory">Kadar Glukosa</option>
+                                <option value="diabetesMelitus">Diabetes Melitus</option>
+                            </select>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Kriteria Data" aria-label="Recipient's username" aria-describedby="button-addon2" id="input-filter" />
                         <button class="btn btn-primary" type="button" id="button-addon2">Cari</button>
                     </div>
                 </div>
                 <div class="col-2">
-                    <a href="/add" class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2"> <iconify-icon icon="zondicons:add-outline"></iconify-icon>Data</a>
+                    <button class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2" type="button" onclick="uploadFile()"><iconify-icon icon="icon-park-outline:excel"></iconify-icon>Import</button>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2" type="button" onclick="uploadFile()"><iconify-icon icon="icon-park-outline:excel"></iconify-icon>Import</button>
+                    <a href="/test" class="btn btn-secondary w-100"> Uji Data</a>
                 </div>
             </div>
 
@@ -56,16 +63,20 @@
                             <th scope="col">Diabetes Melitus</th>
                         </tr>
                     </thead>
-                    <tbody x-data="{ colors: ['Red', 'Orange', 'Yellow'] }">
+                    <tbody class="table-data">
                         <% if (data) { %> <% data.forEach((element,i) => { %>
                         <tr>
                             <th scope="row"><%= i+1 %></th>
-                            <td><%= element.A1 %></td>
-                            <td><%= element.A3 %></td>
-                            <td><%= element.A4 %></td>
-                            <td><%= element.A5 %></td>
-                            <td><%= element.A7 %></td>
-                            <td><%= element.Kelas %></td>
+                            <td class="gender"><%= element.A1 %></td>
+                            <td class="ageCategory"><%= element.A3 %></td>
+                            <td class="hypertension"><%= element.A4 %></td>
+                            <td class="smoke"><%= element.A5 %></td>
+                            <td class="glucoseCategory"><%= element.A7 %></td>
+                            <% if (element.Kelas == "Ya") { %>
+                            <td class="diabetesMelitus badge bg-danger"><%= element.Kelas %></td>
+                            <% } else { %>
+                            <td class="diabetesMelitus badge bg-success"><%= element.Kelas %></td>
+                            <% } %>
                         </tr>
                         <% }) %> <% } %>
                     </tbody>
@@ -121,5 +132,6 @@
                 }
             }
         </script>
+        <script src="script.js"></script>
     </body>
 </html>

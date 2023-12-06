@@ -13,6 +13,7 @@ const { getAllData } = require("./controller/getAllData.js");
 
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
+app.use(express.static("public"));
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -58,10 +59,6 @@ app.get("/", (req, res) => {
     }
 });
 
-app.get("/data", (req, res) => {
-    res.json();
-});
-
 app.get("/add", (req, res) => {
     res.render("addData");
 });
@@ -73,14 +70,8 @@ app.get("/test", (req, res) => {
 app.post("/test", (req, res) => {
     const data = req.body;
     const jsonData = getAllData(PATH);
-    // probabilityResult = getProbability(data, jsonData);
-    // res.render("testData", { result: getProbability(data, jsonData) });
     res.render("testData", { result: getProbability(data, jsonData) });
 });
-
-// app.get("/result", (req, res) => {
-//     res.render("result", { result: "Ya" });
-// });
 
 app.post("/add", (req, res) => {
     res.json(req.body);
