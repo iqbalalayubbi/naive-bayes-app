@@ -10,8 +10,7 @@
 
         <!-- sweet alert -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-        <title>Hello, world!</title>
+        <title>Test Data</title>
     </head>
     <body>
         <h1 class="text-center mt-5"><strong>Testing Data</strong></h1>
@@ -63,13 +62,36 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <% const probability = result %>
         <script>
-            const getProbability = "<%= probability %>";
-            if (getProbability == "Ya" || getProbability == "Tidak") {
+            const probabilityResult = "<%= probability.isDiabetes %>";
+            const yesProbability = "<%= probability.yesProbability %>";
+            const noProbability = "<%= probability.noProbability %>";
+            if (probabilityResult != "") {
                 Swal.fire({
-                    title: "Status Diabetes",
                     html: `
-                    
-                        <span class="badge ${getProbability == "Ya" ? "bg-danger" : "bg-success"}">${getProbability}</span>
+                    <div class="row">
+                        <div class="col">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Ya</th>
+                                        <th>Tidak</th>
+                                        <th>Hasil Uji</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="badge bg-danger">${yesProbability}%</span>  
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-success">${noProbability}%</span>
+                                        </td>
+                                        <td><span class="badge ${probabilityResult == "Ya" ? "bg-danger" : "bg-success"}">${probabilityResult}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>                  
                     `,
                     icon: "success",
                 });

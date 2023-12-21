@@ -26,29 +26,21 @@ inputFilter.addEventListener("input", (e) => {
                 hypertension: rowElement.querySelector(".hypertension").textContent,
                 smoke: rowElement.querySelector(".smoke").textContent,
                 glucoseCategory: rowElement.querySelector(".glucoseCategory").textContent,
-                diabetesMelitus: rowElement.querySelector(".diabetesMelitus").textContent,
+                yesProbability: rowElement.querySelector(".probability").firstElementChild.textContent.slice(0, -1),
+                noProbability: rowElement.querySelector(".probability").lastElementChild.textContent.slice(0, -1),
+                prediction: rowElement.querySelector(".prediction").firstElementChild.textContent,
+                diabetesMelitus: rowElement.querySelector(".diabetesMelitus").firstElementChild.textContent,
             };
 
             dataFound.push(rowData);
-            // rowData.gender = rowData.tableBodyElement.innerHTML = `
-            //     <tr>
-            //         <th scope="row">1</th>
-            //         <td class="gender">${rowElement.querySelector(".gender").textContent}</td>
-            //         <td class="ageCategory">${rowElement.querySelector(".ageCategory").textContent}</td>
-            //         <td class="hypertension">${rowElement.querySelector(".hypertension").textContent}</td>
-            //         <td class="smoke">${rowElement.querySelector(".smoke").textContent}</td>
-            //         <td class="glucoseCategory">${rowElement.querySelector(".glucoseCategory").textContent}</td>
-            //         <td class="diabetesMelitus">${rowElement.querySelector(".diabetesMelitus").textContent}</td>
-            //     </tr>
-            // `;
         }
     }
 
-    console.log(dataFound);
     if (dataFound.length > 0) {
         tableBodyElement.innerHTML = "";
         dataFound.forEach((rowData, i) => {
             const statusClass = rowData.diabetesMelitus == "Ya" ? "bg-danger" : "bg-success";
+            const predictionClass = rowData.prediction == "Ya" ? "bg-danger" : "bg-success";
 
             tableBodyElement.innerHTML += `
                 <tr>
@@ -58,7 +50,18 @@ inputFilter.addEventListener("input", (e) => {
                     <td class="hypertension">${rowData.hypertension}</td>
                     <td class="smoke">${rowData.smoke}</td>
                     <td class="glucoseCategory">${rowData.glucoseCategory}</td>
-                    <td class="diabetesMelitus badge ${statusClass}">${rowData.diabetesMelitus}</td>
+                    <td class="probability">
+                        <span class="badge bg-danger">${rowData.yesProbability}%</span> |
+                        <span class="badge bg-success">${rowData.noProbability}%</span>
+                    </td>
+
+                    <td class="prediction">
+                        <span class="badge ${predictionClass}">${rowData.prediction}</span>
+                    </td>
+                    
+                    <td class="diabetesMelitus">
+                        <span class="badge ${statusClass}">${rowData.diabetesMelitus}</span>
+                    </td>
                 </tr>
             `;
         });

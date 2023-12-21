@@ -17,7 +17,14 @@
         <!-- iconify -->
         <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
-        <title>Hello, world!</title>
+        <style>
+            .swal-wide {
+                width: 2000px !important;
+                height: 500px !important;
+            }
+        </style>
+
+        <title>Diabetes Prediction</title>
     </head>
     <body>
         <div class="container">
@@ -26,7 +33,7 @@
             </div>
 
             <div class="row mt-3 d-flex justify-content-center">
-                <div class="col-8">
+                <div class="col-6">
                     <div class="input-group mb-3">
                         <div class="col-4">
                             <select class="form-select" id="filter-kriteria" name="filter">
@@ -45,12 +52,22 @@
                 <div class="col-2">
                     <button class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2" type="button" onclick="uploadFile()"><iconify-icon icon="icon-park-outline:excel"></iconify-icon>Import</button>
                 </div>
-                <div class="col-2">
-                    <a href="/test" class="btn btn-secondary w-100"> Uji Data</a>
+                <div class="col-4">
+                    <div class="row">
+                        <div class="col-6">
+                            <button class="btn btn-secondary w-100 d-flex align-items-center justify-content-center gap-2" type="button" onclick="showLikeHood()">Cek Frekuensi</button>
+                        </div>
+                        <div class="col-6">
+                            <a href="/test" class="btn btn-primary w-100"> Uji Data</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="row mt-2">
+            <div class="row mt-2 caption-top">
+                <caption>
+                    Kebenaran <%= correctPercentage %>%
+                </caption>
                 <table class="table table-hover text-center">
                     <thead>
                         <tr>
@@ -60,7 +77,10 @@
                             <th scope="col">Hipertensi</th>
                             <th scope="col">Merokok</th>
                             <th scope="col">Kadar Glukosa</th>
+                            <th scope="col">Probabilitas</th>
+                            <th scope="col">Prediksi</th>
                             <th scope="col">Diabetes Melitus</th>
+                            <th scope="col">Status</th>
                         </tr>
                     </thead>
                     <tbody class="table-data">
@@ -72,11 +92,25 @@
                             <td class="hypertension"><%= element.A4 %></td>
                             <td class="smoke"><%= element.A5 %></td>
                             <td class="glucoseCategory"><%= element.A7 %></td>
-                            <% if (element.Kelas == "Ya") { %>
-                            <td class="diabetesMelitus badge bg-danger"><%= element.Kelas %></td>
-                            <% } else { %>
-                            <td class="diabetesMelitus badge bg-success"><%= element.Kelas %></td>
-                            <% } %>
+                            <td class="probability">
+                                <span class="badge bg-danger"><%= result[i].yesProbability %>%</span> |
+                                <span class="badge bg-success"><%= result[i].noProbability %>%</span>
+                            </td>
+
+                            <td class="prediction">
+                                <% const statusClass = result[i].isDiabetes == "Ya" ? "bg-danger" : "bg-success"; %>
+                                <span class="badge <%= statusClass %>"><%= result[i].isDiabetes %></span>
+                            </td>
+
+                            <td class="diabetesMelitus">
+                                <% const diabetesClass = element.Kelas == "Ya" ? "bg-danger" : "bg-success"; %>
+                                <span class="badge <%= diabetesClass %>"><%= element.Kelas %></span>
+                            </td>
+
+                            <td>
+                                <% const predictionResult = result[i].isDiabetes != element.Kelas ? "❌" : "" %>
+                                <span class="badge"><%= predictionResult %></span>
+                            </td>
                         </tr>
                         <% }) %> <% } %>
                     </tbody>
@@ -130,6 +164,73 @@
                     };
                     reader.readAsDataURL(file);
                 }
+            }
+
+            const probabilityColumn = <%- JSON.stringify(probabilityColumn) %>
+            function showLikeHood() {
+                Swal.fire({
+                    customClass: "swal-wide",
+                    html: `
+                    <div class="row">
+                        <div class="col-2">
+                            <div>
+                                <h4><strong>Jenis Kelamin</strong></h4>
+
+                                <h5 class="mt-2">Pria</h5><span class="badge bg-danger">${probabilityColumn.gender.pria[0]}</span><span class="badge bg-success">${probabilityColumn.gender.pria[1]}</span>
+
+                                <h5 class="mt-2">Wanita</h5><span class="badge bg-danger">${probabilityColumn.gender.wanita[0]}</span><span class="badge bg-success">${probabilityColumn.gender.wanita[1]}</span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div>
+                                <h4><strong>Kategori Umur</strong></h4>
+
+                                <h5 class="mt-2">Dewasa</h5><span class="badge bg-danger">${probabilityColumn.ageCategory.dewasa[0]}</span><span class="badge bg-success">${probabilityColumn.ageCategory.dewasa[1]}</span>
+
+                                <h5 class="mt-2">Lansia</h5><span class="badge bg-danger">${probabilityColumn.ageCategory.lansia[0]}</span><span class="badge bg-success">${probabilityColumn.ageCategory.lansia[1]}</span>
+
+                                <h5 class="mt-2">Tua</h5><span class="badge bg-danger">${probabilityColumn.ageCategory.tua[0]}</span><span class="badge bg-success">${probabilityColumn.ageCategory.tua[1]}</span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div>
+                                <h4><strong>Hipertensi</strong></h4>
+
+                                <h5 class="mt-2">Ya</h5><span class="badge bg-danger">${probabilityColumn.hypertension.ya[0]}</span><span class="badge bg-success">${probabilityColumn.hypertension.ya[1]}</span>
+
+                                <h5 class="mt-2">Tidak</h5><span class="badge bg-danger">${probabilityColumn.hypertension.tidak[0]}</span><span class="badge bg-success">${probabilityColumn.hypertension.tidak[1]}</span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div>
+                                <h4><strong>Merokok</strong></h4>
+
+                                <h5 class="mt-2">Ya</h5><span class="badge bg-danger">${probabilityColumn.smoke.ya[0]}</span><span class="badge bg-success">${probabilityColumn.smoke.ya[1]}</span>
+
+                                <h5 class="mt-2">Tidak</h5><span class="badge bg-danger">${probabilityColumn.smoke.tidak[0]}</span><span class="badge bg-success">${probabilityColumn.smoke.tidak[1]}</span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div>
+                                <h4><strong>Kadar Glukosa</strong></h4>
+
+                                <h5 class="mt-2">Normal</h5><span class="badge bg-danger">${probabilityColumn.glucoseCategory.normal[0]}</span><span class="badge bg-success">${probabilityColumn.glucoseCategory.normal[1]}</span>
+
+                                <h5 class="mt-2">Buruk</h5><span class="badge bg-danger">${probabilityColumn.glucoseCategory.buruk[0]}</span><span class="badge bg-success">${probabilityColumn.glucoseCategory.buruk[1]}</span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div>
+                                <h4><strong>Diabetes Melitus</strong></h4>
+
+                                <h5 class="mt-2">Ya</h5><span class="badge bg-danger">${probabilityColumn.diabetesMelitus.ya}</span>
+
+                                <h5 class="mt-2">Tidak</h5><span class="badge bg-success">${probabilityColumn.diabetesMelitus.tidak}</span>
+                            </div>
+                        </div>
+                    </div>
+                    `,
+                });
             }
         </script>
         <script src="script.js"></script>

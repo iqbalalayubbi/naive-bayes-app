@@ -1,3 +1,5 @@
+const { getAllData } = require("./getAllData");
+
 function getTotalData(allData = Array) {
     return allData.length;
 }
@@ -117,7 +119,13 @@ function getProbability(data = Object, allData = Array) {
     noProbability *= dataFrequency.diabetesMelitus.tidak / totalData;
     yesProbability *= dataFrequency.diabetesMelitus.ya / totalData;
 
-    return yesProbability > noProbability ? "Ya" : "Tidak";
+    const probabilityData = {
+        yesProbability: yesProbability.toFixed(5),
+        noProbability: noProbability.toFixed(5),
+        isDiabetes: yesProbability > noProbability ? "Ya" : "Tidak",
+    };
+    // return yesProbability > noProbability ? "Ya" : "Tidak";
+    return probabilityData;
 }
 
-module.exports = { getProbability };
+module.exports = { getProbability, getFrequency };

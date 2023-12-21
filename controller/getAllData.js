@@ -1,5 +1,5 @@
 const XLSX = require("xlsx");
-const SHEET_NUMBER = 1;
+const SHEET_NUMBER = 2;
 const LIMIT_ROW = 21;
 
 function getAllData(path = String) {
