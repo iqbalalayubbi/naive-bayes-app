@@ -2,9 +2,6 @@ const filterKriteria = document.getElementById("filter-kriteria");
 const inputFilter = document.getElementById("input-filter");
 const tableBodyElement = document.querySelector(".table-data");
 let oldData;
-// filterKriteria.addEventListener("change", (e) => {
-//     console.log(e.target.value);
-// });
 
 window.addEventListener("load", (e) => {
     oldData = tableBodyElement.innerHTML;

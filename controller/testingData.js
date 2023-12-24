@@ -124,7 +124,6 @@ function getProbability(data = Object, allData = Array) {
         noProbability: noProbability.toFixed(5),
         isDiabetes: yesProbability > noProbability ? "Ya" : "Tidak",
     };
-    // return yesProbability > noProbability ? "Ya" : "Tidak";
     return probabilityData;
 }
 
